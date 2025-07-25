@@ -36,7 +36,7 @@ public class UserService {
             throw new EmailAlreadyExistsException("email already exists");
         }
         Set<Role> roles=regitserDto.getRoles().stream().
-                        map(role-> roleRepository.findByRoleName(role)
+                        map(role-> roleRepository.findByRoleName(role.toUpperCase())
                                 .orElseThrow(()->new RuntimeException("role doesn't exist "+role)))
                                 .collect(Collectors.toSet());
         regitserDto.setPassword(passwordEncoder.encode(regitserDto.getPassword()));

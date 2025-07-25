@@ -1,5 +1,6 @@
 package com.mart.Agrimart.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,46 +11,39 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
-@Entity(name="users")
+@Entity(name="products")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
-
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, length = 255)
+    private String name;
+    @Column(nullable = false, length = 1000)
+    private String description;
     @Column(nullable = false)
-    private String userName;
-    @Column(nullable = false,unique = true)
-    private String email;
+    private Double price;
     @Column(nullable = false)
-    private String password;
-    @Column(nullable = false, unique = true)
-    private String phoneNo;
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(
-            name="user_roles",
-            joinColumns =@JoinColumn(name="user_id"),
-            inverseJoinColumns =@JoinColumn(name="role_id")
-
-    )
-    private Set<Role> roles=new HashSet<>();
-
+    private Integer quantity;
+    @Column(nullable = false, length = 100)
+    private String category;
+    @Column(nullable = false)
+    private String imageUrl;
+    @Column(nullable = false)
+    private Boolean isAvailable;
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy ="owner",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Product> products=new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name="ownerId")
+    private User owner;
 }
