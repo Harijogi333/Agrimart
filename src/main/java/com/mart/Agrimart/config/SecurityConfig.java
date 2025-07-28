@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .csrf(csrf->csrf.disable())
                 .requestCache(requestCache -> requestCache.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register","/login","/css","/js").permitAll()
+                        .requestMatchers("/register","/login","/css","/js","/verify").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAuthority("USER")
                         .requestMatchers("/farmer/**").hasAuthority("FARMER")

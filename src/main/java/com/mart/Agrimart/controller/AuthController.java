@@ -2,6 +2,7 @@ package com.mart.Agrimart.controller;
 
 import com.mart.Agrimart.dto.LoginRequestDto;
 import com.mart.Agrimart.dto.UserResponse;
+import com.mart.Agrimart.exception.EmailNotVerifiedException;
 import com.mart.Agrimart.mapper.UserToUserResponse;
 import com.mart.Agrimart.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,9 +37,15 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getEmail(),requestDto.getPassword()));
 
+            CustomUserDetails userDetails=(CustomUserDetails) auth.getPrincipal();
+
+            if(!userDetails.getUser().getIsVerified())
+            {
+                throw new EmailNotVerifiedException();
+            }
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            CustomUserDetails userDetails=(CustomUserDetails) auth.getPrincipal();
+
             HttpSession session=request.getSession(true);
             session.setAttribute("userId",userDetails.getUser().getId());
             session.setAttribute(

@@ -46,9 +46,15 @@ public class User {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @Column(name = "is_verified")
+    private Boolean isVerified;
+    @Column(name = "verification_token")
+    private String verificationToken;
+    @Column(name = "verification_token_expiry")
+    private LocalDateTime verificationTokenExpiry;
+
 
     @OneToMany(mappedBy ="owner",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Product> products=new ArrayList<>();
